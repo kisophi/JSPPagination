@@ -1,7 +1,7 @@
 <div class="w3-sidebar w3-light-grey w3-bar-block w3-card-4 w3-margin"
 	style="width: 13%; height: 75%">
 	
-	<a href="#" class="w3-bar-item w3-button">Usuarios</a> 
+	<a href="usuController" class="w3-bar-item w3-button">Usuarios</a> 
 	<a href="#"	class="w3-bar-item w3-button">Clientes</a> 
 	<a href="#"	class="w3-bar-item w3-button">Fornecedor</a> 
 	<a href="#"	class="w3-bar-item w3-button">Produtos</a> 

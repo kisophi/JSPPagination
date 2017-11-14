@@ -14,4 +14,14 @@
     <servlet-name>UsuarioAcesso</servlet-name>
     <url-pattern>/UsuarioAcesso</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UsuarioController</display-name>
+    <servlet-name>UsuarioController</servlet-name>
+    <servlet-class>br.com.akira.controller.servlet.UsuarioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UsuarioController</servlet-name>
+    <url-pattern>/UsuarioController</url-pattern>
+  </servlet-mapping>
 </web-app>
