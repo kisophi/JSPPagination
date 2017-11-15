@@ -8,8 +8,8 @@ public class ConnectionFactory {
 
 	public static Connection getConnection() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/jsppaginationdb"
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			return DriverManager.getConnection("jdbc:mysql://localhost:3306/jsppaginationdb?useTimezone=true&serverTimezone=UTC"
 					, "root"
 					, "123456");
 		} catch (SQLException | ClassNotFoundException e) {
