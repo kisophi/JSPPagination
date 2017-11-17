@@ -67,10 +67,10 @@ public class UsuarioDAO {
 	}
 
 	// exclui Usuario
-	public void excluir(Usuario u) {
+	public void excluir(int id) {
 		String sql = "DELETE FROM usuario WHERE id=?";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, u.getId());
+			ps.setInt(1, id);
 			ps.execute();
 			System.out.println("DELETE : " + ps.toString());
 		} catch (SQLException e) {
@@ -136,6 +136,70 @@ public class UsuarioDAO {
 				u.setNivel(rs.getInt("nivel"));
 				lista.add(u);
 			}
+			return lista;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// Busca Todos os Usuarios
+	public List<Usuario> buscaPorNome(String nome) {
+		String sql = "SELECT * FROM usuario WHERE nome like ?";
+		ArrayList<Usuario> lista = new ArrayList<>();
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, "%" + nome + "%");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Usuario u = new Usuario();
+				u.setId(rs.getInt("id"));
+				u.setNome(rs.getString("nome"));
+				u.setLogin(rs.getString("login"));
+				u.setSenha(rs.getString("senha"));
+				u.setNivel(rs.getInt("nivel"));
+				lista.add(u);
+			}
+			return lista;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// Conta qts registros tem na tabela
+	public int qtdRegistro() {
+		String sql = "SELECT COUNT(*)as qtdRegistros FROM usuario";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				int total = rs.getInt("qtdRegistros");
+				return total;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public List<Usuario> listaCompleta(String buscarPor, String like, String orderBy, int limit, int offset) {
+		String sql = "SELECT * FROM usuario WHERE " + buscarPor + " LIKE ? ORDER BY "+orderBy+" ASC LIMIT ? OFFSET ?";
+		ArrayList<Usuario> lista = new ArrayList<>();
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, "%"+like+"%");
+			ps.setInt(2, limit);
+			ps.setInt(3, offset);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Usuario u = new Usuario();
+				u.setId(rs.getInt("id"));
+				u.setNome(rs.getString("nome"));
+				u.setLogin(rs.getString("login"));
+				u.setSenha(rs.getString("senha"));
+				u.setNivel(rs.getInt("nivel"));
+				lista.add(u);
+			}
+			System.out.println("SELECT "+ps.toString());
 			return lista;
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -26,13 +26,11 @@
 		</div>
 		<div class="w3-col">
 			<label><b>Login</b></label> <input
-				class="w3-input w3-border w3-round" type="text" name="login"
-				required />
+				class="w3-input w3-border w3-round" type="text" name="login" required />
 		</div>
 		<div class="w3-col">
 			<label><b>Senha</b></label> <input
-				class="w3-input w3-border w3-round" type="password" name="senha"
-				required />
+				class="w3-input w3-border w3-round" type="password" name="senha" required />
 		</div>
 		<div class="w3-quarter">
 			<label><b>Nivel</b></label> <select
@@ -48,7 +46,6 @@
 				<input class="w3-btn w3-green w3-round" type="submit" value="Salvar">
 			</p>
 		</div>
-
 	</form>
 </div>
 

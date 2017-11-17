@@ -23,19 +23,67 @@ public class UsuarioController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		UsuarioDAO dao = new UsuarioDAO();
+
 		// pega o paramamentro da tela
 		String id = request.getParameter("id");
-		
+
 		String acao = request.getParameter("acao");
 		if (acao == null) {
 			acao = "listar";
 		}
 
+		String buscarPor = request.getParameter("buscarPor");
+		if (buscarPor == null) {
+			buscarPor = "nome";
+		}
+
+		String like = request.getParameter("like");
+		if (like == null) {
+			like = "";
+		}
+
+		String orderBy = request.getParameter("orderBy");
+		if (orderBy == null) {
+			orderBy = "id";
+		}
+
+		// Seta 12 valores por consulta
+		int limit = 3;
+
+		String numPagina = request.getParameter("numPagina");
+		if (numPagina == null) {
+			numPagina = "1";
+		}
+
+		int offset = (limit * Integer.parseInt(numPagina)) - limit;
+
+		// chama o metodo de total de registro
+		int qtdRegistro = dao.qtdRegistro();
+
+		// divide com o limit para cria a paginação
+		int paginacao = (qtdRegistro/limit);
+
+		// caso o numero for quebrado aumento mais um
+		if (limit % paginacao != 0) {
+			paginacao++;
+		}
+
 		// lista Usuarios em uma tabela na jsp
 		if (acao.equals("listar")) {
 			// Pega o Metodo de buscar Todos Usuarios
-			UsuarioDAO dao = new UsuarioDAO();
-			List<Usuario> lista = dao.buscaTodos();
+			List<Usuario> lista = dao.listaCompleta(buscarPor, like, orderBy, limit, offset);
+
+			request.setAttribute("paginacao", paginacao);
+			request.setAttribute("lista", lista);
+			request.getRequestDispatcher("WEB-INF/usuarioLista.jsp").forward(request, response);
+		}
+
+		// lista Usuarios em uma tabela na jsp
+		else if (acao.equals("Buscar")) {
+			String nome = request.getParameter("nome");
+			// Pega o Metodo de buscar Todos Usuarios
+			List<Usuario> lista = dao.buscaPorNome(nome);
 
 			request.setAttribute("lista", lista);
 			request.getRequestDispatcher("WEB-INF/usuarioLista.jsp").forward(request, response);
@@ -50,7 +98,6 @@ public class UsuarioController extends HttpServlet {
 		else if (acao.equals("Editar")) {
 
 			// busca por Id
-			UsuarioDAO dao = new UsuarioDAO();
 			Usuario objBuscado = dao.buscaPorId(Integer.parseInt(id));
 
 			// Atribui o Obj buscado
@@ -58,6 +105,14 @@ public class UsuarioController extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/usuarioEditar.jsp").forward(request, response);
 		}
 
+		// Excluir atraves do ID
+		else if (acao.equals("Excluir")) {
+
+			// busca por Id
+			dao.excluir(Integer.parseInt(id));
+
+			response.sendRedirect("usuController");
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -24,4 +24,13 @@
     <servlet-name>UsuarioController</servlet-name>
     <url-pattern>/UsuarioController</url-pattern>
   </servlet-mapping>
+  <filter>
+    <display-name>UsuarioFilter</display-name>
+    <filter-name>UsuarioFilter</filter-name>
+    <filter-class>br.com.akira.controller.filter.UsuarioFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>UsuarioFilter</filter-name>
+    <url-pattern>/UsuarioFilter</url-pattern>
+  </filter-mapping>
 </web-app>

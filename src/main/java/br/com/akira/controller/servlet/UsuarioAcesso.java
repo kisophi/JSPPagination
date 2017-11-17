@@ -21,16 +21,16 @@ public class UsuarioAcesso extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		//Ao chama o doget da classe finaliza a sessao
-		//finaliza a Sessao
-		HttpSession sessao = request.getSession();
-		if(sessao!=null){//se existir
-			sessao.invalidate();//invalida
+
+		// Ao chama o doget da classe finaliza a sessao
+		// finaliza a Sessao
+		HttpSession sessao = request.getSession(false);
+		if (sessao != null) {// se existir
+			sessao.invalidate();// invalida
 		}
 		request.setAttribute("msgFinalizaSessao", "Sessao Finalizada !!!");
 		request.getRequestDispatcher("login.jsp").forward(request, response);
-		
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -47,8 +47,13 @@ public class UsuarioAcesso extends HttpServlet {
 		if (usuarioValido != null) {
 			HttpSession sessao = request.getSession();
 			// sessao.setMaxInactiveInterval(60*5);
-			sessao.setAttribute("nomeUsuario", usuarioValido.getNome());
+
+			// seta o usuario na session para o UsuarioFilter
+			sessao.setAttribute("usuario", usuarioValido);
+
 			
+			sessao.setAttribute("nomeUsuario", usuarioValido.getNome());
+
 			// Encaminha para a Pagina de index.jsp
 			request.getRequestDispatcher("WEB-INF/index.jsp").forward(request, response);
 		} else {

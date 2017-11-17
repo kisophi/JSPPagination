@@ -5,10 +5,19 @@
 
 <!-- Div do Botão Cadastrar -->
 <div class="" style="margin-left: 15%; margin-top: 2%; margin-right: 1%">
-	<a href="usuController?acao=Cadastrar"> <input
-		class="w3-button w3-card-4 w3-green w3-border w3-border-green w3-round"
-		type="submit" value="Novo" />
-	</a>
+	<a href="usuController?acao=Cadastrar" > 
+	<input class="w3-button w3-card-4 w3-green w3-border w3-border-green w3-round"
+	type="submit" value="Novo" /></a>
+</div>
+
+<!-- Div do Buscar por nome -->
+<div class="" style="margin-left: 15%; margin-top: 1%; margin-right: 35%">
+	<form action="usuController">
+		<input class="w3-quarter w3-input w3-border w3-round"
+		type="text" name="nome"/>
+		<input class="w3-button w3-card-4 w3-green w3-border w3-border-green w3-round" 
+		type="submit" name="acao" value="Buscar"/>
+	</form>
 </div>
 
 
@@ -38,11 +47,20 @@
 					<td>${usuario.senha}</td>
 					<td>${usuario.nivel}</td>
 					<td><a href="usuController?acao=Editar&id=${usuario.id}">-E-</a></td>
-					<td>-X-</td>
+					<td><a href="usuController?acao=Excluir&id=${usuario.id}">-X-</a></td>
 				</tr>
-
 			</c:forEach>
 		</table>
 	</form>
+	
+	<div class="w3-center">
+	<div class="w3-bar">
+	<p>
+		<c:forEach begin="1" end="${paginacao}" var="i">
+				<a href="usuController?numPagina=${i}" class="w3-button w3-hover-green" >${i}</a>
+		</c:forEach>
+	</div>
+	</div>
+	
 </div>
 <jsp:include page="templates/rodape.jsp" />
