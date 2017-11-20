@@ -167,9 +167,10 @@ public class UsuarioDAO {
 	}
 
 	// Conta qts registros tem na tabela
-	public int qtdRegistro() {
-		String sql = "SELECT COUNT(*)as qtdRegistros FROM usuario";
+	public int qtdRegistro(String buscarPor,String like) {
+		String sql = "SELECT COUNT(*)as qtdRegistros FROM usuario WHERE "+buscarPor+" like ?" ;
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, "%"+like+"%");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				int total = rs.getInt("qtdRegistros");

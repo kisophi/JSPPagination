@@ -5,18 +5,32 @@
 
 <!-- Div do Botão Cadastrar -->
 <div class="" style="margin-left: 15%; margin-top: 2%; margin-right: 1%">
-	<a href="usuController?acao=Cadastrar" > 
-	<input class="w3-button w3-card-4 w3-green w3-border w3-border-green w3-round"
-	type="submit" value="Novo" /></a>
+	<a href="usuController?acao=Cadastrar"> <input
+		class="w3-button w3-card-4 w3-green w3-border w3-border-green w3-round"
+		type="submit" value="Novo" /></a>
 </div>
 
-<!-- Div do Buscar por nome -->
-<div class="" style="margin-left: 15%; margin-top: 1%; margin-right: 35%">
+<!-- Div do Buscar por  -->
+<div class=""
+	style="margin-left: 15%; margin-top: 1%; margin-right: 35%">
 	<form action="usuController">
-		<input class="w3-quarter w3-input w3-border w3-round"
-		type="text" name="nome"/>
-		<input class="w3-button w3-card-4 w3-green w3-border w3-border-green w3-round" 
-		type="submit" name="acao" value="Buscar"/>
+	
+	<!-- 	Select do BuscarPor -->
+	<select class="w3-quarter w3-input w3-border w3-round" name="buscarPor" id="buscarPor">
+		<option value="id">ID</option>
+		<option value="nome" selected>Nome</option>
+		<option value="login">Login</option>
+		<option value="senha">Senha</option>
+		<option value="nivel">Nivel</option>
+	</select>
+	
+	<!-- 		input LIKE -->
+		<input class="w3-quarter w3-input w3-border w3-round" type="text"
+			name="like" /> 
+		
+	<!-- 		Botão Buscar			 -->
+		<input class="w3-button w3-card-4 w3-green w3-border w3-border-green w3-round"
+			type="submit" name="acao" value="Buscar" />
 	</form>
 </div>
 
@@ -52,15 +66,33 @@
 			</c:forEach>
 		</table>
 	</form>
-	
+
 	<div class="w3-center">
-	<div class="w3-bar">
-	<p>
-		<c:forEach begin="1" end="${paginacao}" var="i">
-				<a href="usuController?numPagina=${i}" class="w3-button w3-hover-green" >${i}</a>
-		</c:forEach>
+		<div class="w3-bar">
+			<p>
+
+				<!--  Pagina Anterior -->
+				<c:if test="${param.numPagina>=2}">
+					<a href="usuController?numPagina=${paginaAnterior}
+					&like=${param.like}&buscarPor=${param.buscarPor}"> Anterior</a>
+				</c:if>
+
+
+				<!-- 		Paginação -->
+				<c:forEach begin="1" end="${paginacao}" var="i">
+					<a href="usuController?numPagina=${i}
+					&like=${param.like}&buscarPor=${param.buscarPor}"
+						class="w3-button w3-hover-green">${i}</a>
+				</c:forEach>
+
+
+				<!-- 	proxima Pagina -->
+				<c:if test="${param.numPagina<paginacao}">
+					<a href="usuController?numPagina=${proximaPagina}
+					&like=${param.like}&buscarPor=${param.buscarPor}">Proxima</a>
+				</c:if>
+		</div>
 	</div>
-	</div>
-	
+
 </div>
 <jsp:include page="templates/rodape.jsp" />

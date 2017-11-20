@@ -34,12 +34,12 @@ public class UsuarioController extends HttpServlet {
 		}
 
 		String buscarPor = request.getParameter("buscarPor");
-		if (buscarPor == null) {
+		if (buscarPor == null||buscarPor=="") {
 			buscarPor = "nome";
 		}
 
 		String like = request.getParameter("like");
-		if (like == null) {
+		if (like == null||like=="") {
 			like = "";
 		}
 
@@ -49,24 +49,36 @@ public class UsuarioController extends HttpServlet {
 		}
 
 		// Seta 12 valores por consulta
-		int limit = 3;
+		int limit = 12;
 
 		String numPagina = request.getParameter("numPagina");
-		if (numPagina == null) {
+		if (numPagina == null || numPagina=="") {
 			numPagina = "1";
 		}
 
 		int offset = (limit * Integer.parseInt(numPagina)) - limit;
 
 		// chama o metodo de total de registro
-		int qtdRegistro = dao.qtdRegistro();
+		int qtdRegistro = dao.qtdRegistro(buscarPor, like);
 
 		// divide com o limit para cria a paginação
-		int paginacao = (qtdRegistro/limit);
+		int paginacao = (qtdRegistro / limit);
 
-		// caso o numero for quebrado aumento mais um
-		if (limit % paginacao != 0) {
-			paginacao++;
+		//se a sobra da divisão for diferente de de zero adiciona mais um
+		if(paginacao % limit != 0){
+			paginacao ++;
+		}
+
+		// paginaAnterior
+		int paginaAnterior = 1;
+		if (Integer.parseInt(numPagina) > 1) {
+			paginaAnterior = Integer.parseInt(numPagina) - 1;
+		}
+
+		// Proxima pagina
+		int proximaPagina=paginacao;
+		if (Integer.parseInt(numPagina) < paginacao) {
+			proximaPagina = Integer.parseInt(numPagina) + 1;
 		}
 
 		// lista Usuarios em uma tabela na jsp
@@ -74,17 +86,21 @@ public class UsuarioController extends HttpServlet {
 			// Pega o Metodo de buscar Todos Usuarios
 			List<Usuario> lista = dao.listaCompleta(buscarPor, like, orderBy, limit, offset);
 
+			request.setAttribute("paginaAnterior", paginaAnterior);
 			request.setAttribute("paginacao", paginacao);
+			request.setAttribute("proximaPagina", proximaPagina);
 			request.setAttribute("lista", lista);
 			request.getRequestDispatcher("WEB-INF/usuarioLista.jsp").forward(request, response);
 		}
 
 		// lista Usuarios em uma tabela na jsp
 		else if (acao.equals("Buscar")) {
-			String nome = request.getParameter("nome");
 			// Pega o Metodo de buscar Todos Usuarios
-			List<Usuario> lista = dao.buscaPorNome(nome);
+			List<Usuario> lista = dao.listaCompleta(buscarPor, like, orderBy, limit, offset);
 
+			request.setAttribute("paginaAnterior", paginaAnterior);
+			request.setAttribute("paginacao", paginacao);
+			request.setAttribute("proximaPagina", proximaPagina);
 			request.setAttribute("lista", lista);
 			request.getRequestDispatcher("WEB-INF/usuarioLista.jsp").forward(request, response);
 		}
